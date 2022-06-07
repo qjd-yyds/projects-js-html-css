@@ -9,7 +9,7 @@ function render() {
   load++;
   loadText.innerText = `${load}%`;
   loadText.innerText = `${load}%`
-  loadText.style.opacity = scale(load, 0, 100, 1, 0)
+  loadText.style.opacity = scale(load, 0, 100, 1, 0) 
   bg.style.filter = `blur(${scale(load, 0, 100, 30, 0)}px)`
   if (load > 99) {
     cancelAnimationFrame(FrameRequest);
