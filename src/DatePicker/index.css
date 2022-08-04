@@ -1,0 +1,25 @@
+html,body {
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.date-container {
+  width: 280px;
+  background-color: #fff;
+}
+.picker-body {
+  padding: 8px 12px;
+}
+table {
+  text-align: center;
+}
+.picker-content {
+  width: 252px;
+}
