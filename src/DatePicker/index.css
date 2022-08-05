@@ -1,25 +1,42 @@
-html,body {
-  background-color: #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+html,
+body {
+	background-color: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
 }
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 .date-container {
-  width: 280px;
-  background-color: #fff;
+	width: 280px;
+	background-color: #fff;
+}
+.picker-header {
+	display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+  border-bottom: 1px solid #0000000f;
+  line-height: 40px;
+}
+.picker-header button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.prev-btn {
+}
+.next-btn {
 }
 .picker-body {
-  padding: 8px 12px;
+	padding: 8px 12px;
 }
 table {
-  text-align: center;
+	text-align: center;
 }
 .picker-content {
-  width: 252px;
+	width: 252px;
 }

@@ -1,11 +1,22 @@
+const prevMonthBtn = document.querySelector('#prev');
+const nextMonthBtn = document.querySelector('#next');
+const prevYearBtn = document.querySelector('#prev-year');
+const nextYearBtn = document.querySelector('#next-year');
+const nowDateText = document.querySelector('#now');
 // 定义每个月的天数，闰月的话就是29天
-const getDaysMonth = (year = 2022) => {
+function getDaysMonth(year = 2022) {
 	const daysMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 	if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
 		daysMonth[1] = 29;
 	}
 	return daysMonth;
-};
+}
+
+let nowYear = new Date().getFullYear();
+let nowMonthIndex = new Date().getMonth();
+let nowMonth = nowMonthIndex + 1;
+let currentsDaysMonth = getDaysMonth(nowYear);
+let days = currentsDaysMonth[nowMonthIndex];
 // 获得月份的第一天是星期几
 const getStartDay = (year, month) => {
 	return new Date(year, month - 1, 1).getDay();
@@ -24,8 +35,8 @@ const splitArr = (arr, num = 7) => {
 		[[]]
 	);
 };
-// 顶部星期
-const createTheadHtml = () => {
+// 渲染日期顶部
+const renderDateHead = () => {
 	const thead = document.querySelector('thead');
 	const theadList = ['日', '一', '二', '三', '四', '五', '六'];
 
@@ -39,19 +50,24 @@ const createTheadHtml = () => {
   </tr>`;
 	thead.innerHTML = html;
 };
-// 日期
-const createTbodyHtml = () => {
+// 渲染日期内容
+const renderDateBody = () => {
 	const tbody = document.querySelector('tbody');
 	let html = '';
 	const totalArr = [];
-	const prev = getLastMonth(2022, 8);
+	// 计算上月的日期需要渲染的部分
+	const prev = getPrevDays(nowYear, nowMonth);
 	totalArr.push(...prev);
-	for (let i = 1; i <= 31; i++) {
+	// 计算本月的日期需要渲染的部分
+	for (let i = 1; i <= days; i++) {
 		totalArr.push({
 			type: 'normal',
 			content: i
 		});
 	}
+	// 计算下月的日期需要渲染的部分
+	const next = getNextDays(nowYear, nowMonth);
+	totalArr.push(...next);
 	const list = splitArr(totalArr);
 	list.forEach(item => {
 		html += `<tr>${item
@@ -62,8 +78,11 @@ const createTbodyHtml = () => {
 	});
 	tbody.innerHTML = html;
 };
+const renderCenterText = () => {
+	nowDateText.innerText = `${nowYear}-${nowMonth}`;
+};
 // 计算上月的日期需要渲染的部分
-const getLastMonth = (year, month) => {
+const getPrevDays = (year, month) => {
 	const preNum = getStartDay(year, month);
 	const prevArr = [];
 	for (let i = 0; i < preNum; i++) {
@@ -75,9 +94,59 @@ const getLastMonth = (year, month) => {
 	}
 	return prevArr;
 };
-const render = () => {
-	createTheadHtml();
-	createTbodyHtml();
+// 计算下月的日期需要渲染的部分
+const getNextDays = (year, month) => {
+	const nextNum = 6 - getStartDay(year, month + 1);
+	const nextArr = [];
+	for (let i = 0; i <= nextNum; i++) {
+		const obj = {
+			type: 'next',
+			// content: i + 1
+			content: ''
+		};
+		nextArr.push(obj);
+	}
+	return nextArr;
 };
+prevMonthBtn.addEventListener('click', () => {
+	nowMonthIndex = nowMonthIndex - 1;
+	if (nowMonthIndex < 0) {
+		nowMonthIndex = 11;
+		nowYear--;
+	}
+	nowMonth = nowMonthIndex + 1;
+	currentsDaysMonth = getDaysMonth(nowYear);
+	days = currentsDaysMonth[nowMonthIndex];
+	render();
+});
 
+nextMonthBtn.addEventListener('click', () => {
+	nowMonthIndex = nowMonthIndex + 1;
+	if (nowMonthIndex >= 12) {
+		nowMonthIndex = 0;
+		nowYear++;
+	}
+	nowMonth = nowMonthIndex + 1;
+	currentsDaysMonth = getDaysMonth(nowYear);
+	days = currentsDaysMonth[nowMonthIndex];
+	render();
+});
+
+prevYearBtn.addEventListener('click', () => {
+	nowYear--;
+	currentsDaysMonth = getDaysMonth(nowYear);
+	days = currentsDaysMonth[nowMonthIndex];
+	render();
+});
+nextYearBtn.addEventListener('click', () => {
+	nowYear++;
+	currentsDaysMonth = getDaysMonth(nowYear);
+	days = currentsDaysMonth[nowMonthIndex];
+	render();
+});
+const render = () => {
+	renderDateHead();
+	renderDateBody();
+	renderCenterText();
+};
 render();
